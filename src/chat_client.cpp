@@ -13,6 +13,7 @@ zmq::context_t ctx;
 std::map<std::string,zmq::socket_t> name_to_socket;
 std::mutex name_to_socket_lock;
 
+// added the name to the arguments of send_func so the name can be sent as well.
 void send_func(std::string whereis_endpoint, std::string sender_name)
 {   
 
@@ -65,6 +66,7 @@ void send_func(std::string whereis_endpoint, std::string sender_name)
             maybe_socket = name_to_socket.find(recipient);
             std::cout << "sending message: '" << text << "' to: '" << recipient << "'" << std::endl; 
             maybe_socket->second.send(zmq::buffer(text));
+            // added a seperate message for the name of the sender
             maybe_socket->second.send(zmq::buffer(sender_name));
         }
     }
@@ -76,13 +78,16 @@ void recv_func(std::string endpoint)
     zmq::socket_t sock(ctx,zmq::socket_type::pull);
     sock.bind(endpoint);
     zmq::message_t msg;
+    // create another message_t that holds the name
     zmq::message_t sender_name;
     
 
     while(true)
     {
         auto _ = sock.recv(msg);
+                // receive the name message as well
              _ = sock.recv(sender_name);
+             // add the sender_name to the message
         std::cout << "recieved message from " << sender_name.to_string() << ": '" << msg.to_string() << "'" << std::endl;
     }
 }
