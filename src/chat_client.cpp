@@ -13,7 +13,7 @@ zmq::context_t ctx;
 std::map<std::string,zmq::socket_t> name_to_socket;
 std::mutex name_to_socket_lock;
 
-void send_func(std::string whereis_endpoint)
+void send_func(std::string whereis_endpoint, std::string sender)
 {   
 
     zmq::socket_t sock(ctx,zmq::socket_type::req);
@@ -26,7 +26,7 @@ void send_func(std::string whereis_endpoint)
 
         auto split = msg.find(",");
         std::string recipient = msg.substr(0, split);
-        std::string text = msg.substr(split + 1);
+        std::string text = "'"+sender+"': " + msg.substr(split + 1);
         bool recipient_located = true;
 
         // check if we already have an connection to the recipient
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     std::cout << "client successfully registered" << std::endl;
     std::cout << "to send a message type a message of the form: 'recipient,message' and then press enter" << std::endl;
 
-    std::thread send_thread(send_func,server_whereis_client_endpoint);
+    std::thread send_thread(send_func,server_whereis_client_endpoint, name);
     std::thread recv_thread(recv_func,recv_endpoint);
 
     send_thread.join();
