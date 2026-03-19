@@ -13,10 +13,12 @@
     * How do you decide who is the server and who is the client? 
         Client server architecture is a method of designing software where the client and server interact with eachother via requests and replies.
         We encounter this everywhere, all distributed systems are built on this concept, however the specific software architecture varies, and often combines many different patterns, resulting in its own unique architecture. A concrete example is Netflix or Amazon, which both heavily rely on cloud computing platforms. The client is the one interacting with the service while the server provides the resources, stores data, delivers the services etc. Very generally, the server provides a service, and the client makes use of that service. An example of this architecture a single system, instead of a distributed system, is the operating system, which has servers that provide much of the core functionality.
+
 3. What is the difference between client-server architecture and the broker architecture? (100 words) 
     * What are the benefits to the broker pattern? 
     * What could be potential downsides? 
         The broker architecture has a middleman, which controls the flow of requests between the server and client i.e. the client and the server do not know of eachother. Client-server architecture is instead one on one between the client and server. The broker pattern is easier to scale and change as there is no dependency between the client and server. Since the broker generally controls all requests(depends on design), it can be devastating if it fails, or if someone manages to hack into the broker. Basically, it becomes a single point of failure.
+        
 4. What does Peer-to-Peer mean? (150 words) 
     * What are the main characteristics of this architecture? 
     * Have you encountered it anywhere online? 
