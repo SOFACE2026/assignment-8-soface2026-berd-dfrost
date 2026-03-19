@@ -58,3 +58,4 @@ dkms.conf
 chat_client
 chat_server
 .gitignore
+doodad.md
